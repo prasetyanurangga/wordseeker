@@ -10,6 +10,8 @@ class PuzzleState extends Equatable {
   const PuzzleState({
     this.puzzle = const Puzzle(tiles: []),
     this.puzzleStatus = PuzzleStatus.incomplete,
+    this.puzzleLevel = PuzzleLevel.easy,
+    this.playerName = "",
     this.tileMovementStatus = TileMovementStatus.nothingTapped,
     this.numberOfCorrectTiles = 0,
     this.numberOfMoves = 0,
@@ -21,6 +23,10 @@ class PuzzleState extends Equatable {
 
   /// Status indicating the current state of the puzzle.
   final PuzzleStatus puzzleStatus;
+
+  final PuzzleLevel puzzleLevel;
+
+  final String playerName;
 
   /// Status indicating if a [Tile] was moved or why a [Tile] was not moved.
   final TileMovementStatus tileMovementStatus;

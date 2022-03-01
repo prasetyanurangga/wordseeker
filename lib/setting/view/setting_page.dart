@@ -6,26 +6,34 @@ import 'dart:math' as math;
 import 'dart:ui';
 import 'package:gap/gap.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
+import 'package:very_good_slide_puzzle/models/models.dart';
 import 'package:very_good_slide_puzzle/component/simple_button.dart';
+import 'package:very_good_slide_puzzle/component/simple_textfield.dart';
+import 'package:very_good_slide_puzzle/component/simple_choose_button.dart';
 import 'package:very_good_slide_puzzle/colors/colors.dart';
 import 'package:very_good_slide_puzzle/router/router_name.dart';
+import 'package:very_good_slide_puzzle/router/router_generator.dart';
 import 'package:qlevar_router/qlevar_router.dart';
 
 
-class LandingPage extends StatefulWidget {
-  LandingPage({Key? key}) : super(key: key);
+class SettingPage extends StatefulWidget {
+  SettingPage({Key? key}) : super(key: key);
 
   @override
-  _LandingPageState createState() => new _LandingPageState();
+  _SettingPageState createState() => new _SettingPageState();
 }
 
-class _LandingPageState extends State<LandingPage>{
+class _SettingPageState extends State<SettingPage>{
 
   @override
   Widget build(BuildContext context) {
 
+    PuzzleLevel _puzzleLevel = PuzzleLevel.easy;
+    String _playerName = "";
+
     return Scaffold(
       body: BackgroundPage(
+        isBlur: true,
         child : LayoutBuilder(
           builder: (context, constraints) {
             return SingleChildScrollView(
@@ -45,46 +53,76 @@ class _LandingPageState extends State<LandingPage>{
                             ),
                             duration: PuzzleThemeAnimationDuration.textStyle,
                             child: Text(
-                              "Do you feel smart enough to",
+                              "But before we start, let we know who you are",
                               textAlign: TextAlign.center,
                             ),
                           ), 
 
-                          Gap(16),
+                          Gap(24),
 
-                          AnimatedDefaultTextStyle(
-                            style: PuzzleTextStyle.headline1,
-                            duration: PuzzleThemeAnimationDuration.textStyle,
-                            child: Text(
-                              "WORD SEEKING?",
-                              textAlign: TextAlign.center,
-                            ),
+                          SimpleTextField(
+                            onChange: (String value) {
+                              print(value);
+                              setState((){
+                                 _playerName = value;
+                              });
+                            },
+                            hintText: "Enter your nickname here..."
                           ),
-                          Gap(16),
+
+                          Gap(32),
                           AnimatedDefaultTextStyle(
                             style: PuzzleTextStyle.body.copyWith(
                               color: Color(0xFF505871),
                             ),
                             duration: PuzzleThemeAnimationDuration.textStyle,
                             child: Text(
-                              "Welcome to “Wordseeker” puzzle game and try to search all the words as much as you can!",
+                              "and also, choose the level of puzzle:",
                               textAlign: TextAlign.center,
                             ),
                           ), 
+                          Gap(32),
+
+
+                          SimpleChooseButton(
+                            onChange: (PuzzleLevel level) {
+                              setState((){
+                                  _puzzleLevel = level;
+                              });
+                            }
+                          ),
 
 
                           Gap(72),
 
                           SimpleButton(
+                            disable: _playerName == "" ? true : false,
                             textColor: PuzzleColors.primary0,
                             backgroundColor: PuzzleColors.primary6,
                             onPressed: () {
-                              QR.toName(RoutesName.SETTING_PAGE);
+
+                                String level = "easy";
+
+                                if(_puzzleLevel == PuzzleLevel.easy){
+                                  level = "easy";
+                                } else if(_puzzleLevel == PuzzleLevel.medium){
+                                  level = "medium";
+                                } else if(_puzzleLevel == PuzzleLevel.hard){
+                                  level = "hard";
+                                }
+                              
+                                QR.toName(RoutesName.PUZZLE_PAGE, params:
+                                  {
+                                    'player_name':_playerName,
+                                    'puzzle_level': level
+                                  }
+                                );
+                              
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Try to seek!"),
+                                Text("Start Puzzle"),
                               ],
                             ),
                           )

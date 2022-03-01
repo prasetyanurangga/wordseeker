@@ -262,8 +262,9 @@ class SimpleStartSection extends StatelessWidget {
           medium: 83,
           large: 151,
         ),
-        PuzzleName(
-          key: puzzleNameKey,
+        PuzzleTimer(
+          title: state.playerName,
+          color: Colors.black
         ),
         const ResponsiveGap(large: 16),
         SimplePuzzleTitle(
@@ -274,12 +275,6 @@ class SimpleStartSection extends StatelessWidget {
           medium: 16,
           large: 32,
         ),
-        NumberOfMovesAndTilesLeft(
-          key: numberOfMovesAndTilesLeftKey,
-          numberOfMoves: state.numberOfMoves,
-          numberOfTilesLeft: state.numberOfTilesLeft,
-        ),
-
         Container(
           child: BlocBuilder<TimerBloc, TimerState>(
             builder: (context, state) {

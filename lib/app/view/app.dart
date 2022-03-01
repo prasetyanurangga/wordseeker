@@ -16,6 +16,9 @@ import 'package:very_good_slide_puzzle/helpers/helpers.dart';
 import 'package:very_good_slide_puzzle/l10n/l10n.dart';
 import 'package:very_good_slide_puzzle/puzzle/puzzle.dart';
 import 'package:very_good_slide_puzzle/landing/landing.dart';
+import 'package:very_good_slide_puzzle/router/router_name.dart';
+import 'package:very_good_slide_puzzle/router/router_generator.dart';
+import 'package:qlevar_router/qlevar_router.dart';
 
 class App extends StatefulWidget {
   const App({Key? key, ValueGetter<PlatformHelper>? platformHelperFactory})
@@ -147,7 +150,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       theme: ThemeData(
         appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
         colorScheme: ColorScheme.fromSwatch(
@@ -159,7 +162,8 @@ class _AppState extends State<App> {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: LandingPage(),
+      routeInformationParser: const QRouteInformationParser(),
+      routerDelegate: QRouterDelegate(RouteGenerator.routes)
     );
   }
 }

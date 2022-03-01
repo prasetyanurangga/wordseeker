@@ -37,8 +37,8 @@ class PuzzleTimer extends StatelessWidget {
       ),
       child: (currentSize) {
         final bodyTextStyle = currentSize == ResponsiveLayoutSize.small
-            ? PuzzleTextStyle.bodySmall
-            : PuzzleTextStyle.body;
+            ? PuzzleTextStyle.headline2
+                : PuzzleTextStyle.headline3;
 
         final textAlign = currentSize == ResponsiveLayoutSize.small
             ? TextAlign.center

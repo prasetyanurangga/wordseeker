@@ -10,12 +10,18 @@ abstract class PuzzleEvent extends Equatable {
 }
 
 class PuzzleInitialized extends PuzzleEvent {
-  const PuzzleInitialized({required this.shufflePuzzle});
+  const PuzzleInitialized({
+    required this.shufflePuzzle,
+    required this.puzzleLevel,
+    required this.playerName,
+  });
 
   final bool shufflePuzzle;
+  final PuzzleLevel puzzleLevel;
+  final String playerName;
 
   @override
-  List<Object> get props => [shufflePuzzle];
+  List<Object> get props => [shufflePuzzle, puzzleLevel, playerName];
 }
 
 class TileTapped extends PuzzleEvent {

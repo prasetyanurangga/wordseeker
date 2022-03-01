@@ -14,12 +14,29 @@ import 'package:very_good_slide_puzzle/simple/simple.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
 import 'package:very_good_slide_puzzle/timer/timer.dart';
 import 'package:very_good_slide_puzzle/typography/typography.dart';
+import 'package:qlevar_router/qlevar_router.dart';
 
 class PuzzlePage extends StatelessWidget {
-  const PuzzlePage({Key? key}) : super(key: key);
+  const PuzzlePage({
+    Key? key
+  }) : super(key: key);
 
+  
   @override
   Widget build(BuildContext context) {
+    String playerName = QR.params['player_name'].toString();
+    String level = QR.params['puzzle_level'].toString();
+
+    PuzzleLevel getPuzzleLevel(){
+      if(level == "hard"){
+        return PuzzleLevel.hard;
+      } else if(level == "medium"){
+        return PuzzleLevel.medium;
+      } else{
+        return PuzzleLevel.easy;
+      }
+    }
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -38,12 +55,22 @@ class PuzzlePage extends StatelessWidget {
           create: (_) => AudioControlBloc(),
         ),
       ],
-      child: PuzzleView(),
+      child: PuzzleView(
+        playerName: playerName,
+        puzzleLevel: getPuzzleLevel()
+      ),
     );
   }
 }
 class PuzzleView extends StatefulWidget {
-  PuzzleView({Key? key}) : super(key: key);
+  const PuzzleView({
+    Key? key,
+    this.playerName = "Anonymaous",
+  this.puzzleLevel = PuzzleLevel.easy
+  }) : super(key: key);
+
+  final String playerName;
+  final PuzzleLevel puzzleLevel;
 
   @override
   _PuzzleViewState createState() => new _PuzzleViewState();
@@ -53,7 +80,7 @@ class _PuzzleViewState extends State<PuzzleView> with TickerProviderStateMixin {
 
   
 
-
+  
   
 
   @override
@@ -79,6 +106,8 @@ class _PuzzleViewState extends State<PuzzleView> with TickerProviderStateMixin {
                 ..add(
                   PuzzleInitialized(
                     shufflePuzzle: shufflePuzzle,
+                    puzzleLevel: widget.puzzleLevel,
+                    playerName: widget.playerName
                   ),
                 ),
             ),
