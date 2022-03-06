@@ -57,6 +57,8 @@ class PuzzleState extends Equatable {
     int? numberOfCorrectTiles,
     int? numberOfMoves,
     Tile? lastTappedTile,
+    PuzzleLevel? puzzleLevel,
+    String? playerName
   }) {
     return PuzzleState(
       puzzle: puzzle ?? this.puzzle,
@@ -65,6 +67,8 @@ class PuzzleState extends Equatable {
       numberOfCorrectTiles: numberOfCorrectTiles ?? this.numberOfCorrectTiles,
       numberOfMoves: numberOfMoves ?? this.numberOfMoves,
       lastTappedTile: lastTappedTile ?? this.lastTappedTile,
+      puzzleLevel: puzzleLevel ?? this.puzzleLevel,
+      playerName: playerName ?? this.playerName,
     );
   }
 
@@ -76,5 +80,7 @@ class PuzzleState extends Equatable {
         numberOfCorrectTiles,
         numberOfMoves,
         lastTappedTile,
+        puzzleLevel,
+        playerName
       ];
 }

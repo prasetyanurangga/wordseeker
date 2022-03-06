@@ -7,3 +7,5 @@ export 'puzzle_name.dart';
 export 'puzzle_title.dart';
 export 'puzzle_timer.dart';
 export 'background_page.dart';
+export 'player_name.dart';
+export 'puzzle_level_text.dart';

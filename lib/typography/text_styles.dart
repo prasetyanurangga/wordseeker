@@ -94,12 +94,30 @@ class PuzzleTextStyle {
     );
   }
 
+
+  /// Body text style
+  static TextStyle get bodyBold {
+    return _bodyTextStyle.copyWith(
+      fontSize: 24,
+      height: 1.33,
+      fontWeight: PuzzleFontWeight.bold,
+    );
+  }
+
   /// Body Small text style
   static TextStyle get bodySmall {
     return _bodyTextStyle.copyWith(
       fontSize: 18,
       height: 1.22,
       fontWeight: PuzzleFontWeight.regular,
+    );
+  }
+  /// Body Small text style
+  static TextStyle get bodySmallBold {
+    return _bodyTextStyle.copyWith(
+      fontSize: 18,
+      height: 1.22,
+      fontWeight: PuzzleFontWeight.bold,
     );
   }
 

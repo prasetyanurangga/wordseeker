@@ -25,14 +25,25 @@ class PuzzleInitialized extends PuzzleEvent {
 }
 
 class TileTapped extends PuzzleEvent {
-  const TileTapped(this.tile);
+  const TileTapped(
+    this.tile,{
+    required this.puzzleLevel,
+  });
 
   final Tile tile;
+  final PuzzleLevel puzzleLevel;
 
   @override
-  List<Object> get props => [tile];
+  List<Object> get props => [tile, puzzleLevel];
 }
 
 class PuzzleReset extends PuzzleEvent {
-  const PuzzleReset();
+  const PuzzleReset({
+    required this.puzzleLevel,
+  });
+
+  final PuzzleLevel puzzleLevel;
+
+  @override
+  List<Object> get props => [puzzleLevel];
 }

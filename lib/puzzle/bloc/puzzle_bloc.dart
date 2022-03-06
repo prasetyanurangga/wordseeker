@@ -124,11 +124,13 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
 
     var bunchOfData = generateWordLevel();
     List<String> bunchOfString = bunchOfData['data'];
-    final puzzle = _generatePuzzle(_size, shuffle: event.shufflePuzzle);
+    final puzzle = _generatePuzzle(_size, shuffle: event.shufflePuzzle, level : event.puzzleLevel);
     emit(
       PuzzleState(
         puzzle: puzzle.sort(),
         numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
+        playerName: event.playerName,
+        puzzleLevel: event.puzzleLevel
       ),
     );
   }
@@ -137,7 +139,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
     final tappedTile = event.tile;
     if (state.puzzleStatus == PuzzleStatus.incomplete) {
       if (state.puzzle.isTileMovable(tappedTile)) {
-        final mutablePuzzle = Puzzle(tiles: [...state.puzzle.tiles], countLetter :state.puzzle.countLetter);
+        final mutablePuzzle = Puzzle(tiles: [...state.puzzle.tiles], countLetter :state.puzzle.countLetter,  puzzleLevel: state.puzzleLevel);
         final puzzle = mutablePuzzle.moveTiles(tappedTile, []);
         if (puzzle.isComplete()) {
           emit(
@@ -148,6 +150,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
               numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
               numberOfMoves: state.numberOfMoves + 1,
               lastTappedTile: tappedTile,
+              playerName: state.playerName,
+              puzzleLevel: state.puzzleLevel
             ),
           );
         } else {
@@ -158,6 +162,8 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
               numberOfCorrectTiles: puzzle.getNumberOfCorrectTiles(),
               numberOfMoves: state.numberOfMoves + 1,
               lastTappedTile: tappedTile,
+              playerName: state.playerName,
+              puzzleLevel: state.puzzleLevel
             ),
           );
         }
@@ -174,7 +180,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   }
 
   void _onPuzzleReset(PuzzleReset event, Emitter<PuzzleState> emit) {
-    final puzzle = _generatePuzzle(_size);
+    final puzzle = _generatePuzzle(_size, level: event.puzzleLevel);
     emit(
       PuzzleState(
         puzzle: puzzle.sort(),
@@ -184,7 +190,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
   }
 
   /// Build a randomized, solvable puzzle of the given size.
-  Puzzle _generatePuzzle(int size, {bool shuffle = true}) {
+  Puzzle _generatePuzzle(int size, {bool shuffle = true, PuzzleLevel level: PuzzleLevel.easy}) {
     final correctPositions = <Position>[];
     final currentPositions = <Position>[];
     final whitespacePosition = Position(x: size, y: size);
@@ -223,7 +229,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
       bunchOfWord
     );
 
-    var puzzle = Puzzle(tiles: tiles, countLetter: bunchOfCountWord);
+    var puzzle = Puzzle(tiles: tiles, countLetter: bunchOfCountWord, puzzleLevel: level);
 
     if (shuffle) {
       // Assign the tiles new current positions until the puzzle is solvable and
@@ -236,7 +242,7 @@ class PuzzleBloc extends Bloc<PuzzleEvent, PuzzleState> {
           currentPositions,
           bunchOfWord
         );
-        puzzle = Puzzle(tiles: tiles, countLetter: bunchOfCountWord);
+        puzzle = Puzzle(tiles: tiles, countLetter: bunchOfCountWord, puzzleLevel: level);
       }
     }
 

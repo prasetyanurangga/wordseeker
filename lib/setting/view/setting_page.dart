@@ -25,11 +25,11 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage>{
 
+  PuzzleLevel _puzzleLevel = PuzzleLevel.easy;
+  String _playerName = "";
   @override
   Widget build(BuildContext context) {
 
-    PuzzleLevel _puzzleLevel = PuzzleLevel.easy;
-    String _playerName = "";
 
     return Scaffold(
       body: BackgroundPage(
@@ -110,13 +110,14 @@ class _SettingPageState extends State<SettingPage>{
                                 } else if(_puzzleLevel == PuzzleLevel.hard){
                                   level = "hard";
                                 }
-                              
-                                QR.toName(RoutesName.PUZZLE_PAGE, params:
-                                  {
+
+                                QR.navigator.replaceAllWithName(RoutesName.PUZZLE_PAGE,
+                                  params: {
                                     'player_name':_playerName,
                                     'puzzle_level': level
-                                  }
-                                );
+                                  });
+                              
+                                
                               
                             },
                             child: Row(

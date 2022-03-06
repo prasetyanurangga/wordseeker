@@ -37,10 +37,12 @@ class Puzzle extends Equatable {
   /// {@macro puzzle}
   const Puzzle({
     required this.tiles,
-    this.countLetter = const []
+    this.countLetter = const [],
+    this.puzzleLevel = PuzzleLevel.easy
   });
 
   final List countLetter;
+  final PuzzleLevel puzzleLevel;
 
   /// List of [Tile]s representing the puzzle's current arrangement.
   final List<Tile> tiles;
@@ -111,8 +113,28 @@ class Puzzle extends Equatable {
   bool isComplete() {
     var correctPerRow = getNumberOfCorrectTilesPerRow();
     var currentDimension = getDimension();
-    return correctPerRow.contains(currentDimension) || correctPerRow[currentDimension - 1] == (currentDimension - 1);
-    //return (tiles.length - 1) - getNumberOfCorrectTiles() == 0;
+    var countCorrect = 0;
+    for (var i = 0; i < currentDimension; i++) {
+      if(currentDimension-1 == i && correctPerRow[currentDimension - 1] == (currentDimension - 1)){
+        countCorrect ++;
+      } else if(correctPerRow[i] == currentDimension){
+        countCorrect ++;
+      }
+    }
+
+    print(this.puzzleLevel);
+    print(countCorrect);
+
+    if(this.puzzleLevel == PuzzleLevel.hard && countCorrect == 3){
+      return true;
+    } else if(this.puzzleLevel == PuzzleLevel.medium && countCorrect == 2){
+      return true;
+    } else if(this.puzzleLevel == PuzzleLevel.easy && countCorrect == 1){
+      return true;
+    } else {
+      return false;
+    }
+
   }
 
   /// Determines if the tapped tile can move in the direction of the whitespace
@@ -233,7 +255,7 @@ class Puzzle extends Equatable {
       );
     }
 
-    return Puzzle(tiles: tiles, countLetter : countLetter);
+    return Puzzle(tiles: tiles, countLetter : countLetter, puzzleLevel: puzzleLevel);
   }
 
   /// Sorts puzzle tiles so they are in order of their current position.
@@ -242,7 +264,7 @@ class Puzzle extends Equatable {
       ..sort((tileA, tileB) {
         return tileA.currentPosition.compareTo(tileB.currentPosition);
       });
-    return Puzzle(tiles: sortedTiles, countLetter : countLetter);
+    return Puzzle(tiles: sortedTiles, countLetter : countLetter, puzzleLevel: puzzleLevel);
   }
 
   @override

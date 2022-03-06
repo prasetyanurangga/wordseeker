@@ -56,7 +56,7 @@ class PuzzlePage extends StatelessWidget {
         ),
       ],
       child: PuzzleView(
-        playerName: playerName,
+        playerName: playerName == null ? playerName : "Guest",
         puzzleLevel: getPuzzleLevel()
       ),
     );
@@ -65,7 +65,7 @@ class PuzzlePage extends StatelessWidget {
 class PuzzleView extends StatefulWidget {
   const PuzzleView({
     Key? key,
-    this.playerName = "Anonymaous",
+    this.playerName = "Guest",
   this.puzzleLevel = PuzzleLevel.easy
   }) : super(key: key);
 

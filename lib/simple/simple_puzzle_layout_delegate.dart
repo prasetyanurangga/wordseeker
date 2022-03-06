@@ -11,7 +11,9 @@ import 'package:very_good_slide_puzzle/simple/simple.dart';
 import 'package:very_good_slide_puzzle/theme/theme.dart';
 import 'package:very_good_slide_puzzle/typography/typography.dart';
 import 'package:very_good_slide_puzzle/timer/timer.dart';
+import 'package:very_good_slide_puzzle/router/router_name.dart';
 
+import 'package:qlevar_router/qlevar_router.dart';
 
 class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
 
@@ -39,8 +41,8 @@ class SimplePuzzleLayoutDelegate extends PuzzleLayoutDelegate {
           medium: 48,
         ),
         ResponsiveLayoutBuilder(
-          small: (_, child) => const SimplePuzzleShuffleButton(),
-          medium: (_, child) => const SimplePuzzleShuffleButton(),
+          small: (_, child) =>  SimplePuzzleShuffleButton(state: state),
+          medium: (_, child) =>  SimplePuzzleShuffleButton(state: state),
           large: (_, __) => const SizedBox(),
         ),
         const ResponsiveGap(
@@ -252,6 +254,20 @@ class SimpleStartSection extends StatelessWidget {
     return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 
+  String getLevel(PuzzleLevel _puzzleLevel){
+    String level = "Easy";
+
+    if(_puzzleLevel == PuzzleLevel.easy){
+      level = "Easy";
+    } else if(_puzzleLevel == PuzzleLevel.medium){
+      level = "Medium";
+    } else if(_puzzleLevel == PuzzleLevel.hard){
+      level = "Hard";
+    }
+
+    return level;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -262,13 +278,39 @@ class SimpleStartSection extends StatelessWidget {
           medium: 83,
           large: 151,
         ),
-        PuzzleTimer(
-          title: state.playerName,
+        PlayerName(
+          title: "Hi, ${state.playerName}! welcome to",
           color: Colors.black
         ),
         const ResponsiveGap(large: 16),
         SimplePuzzleTitle(
           status: state.puzzleStatus,
+        ),
+        const ResponsiveGap(large: 16),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            PuzzleLevelText(
+              title: "${getLevel(state.puzzleLevel)}",
+              color: Colors.black
+            ),
+            SizedBox(
+              width: 12
+            ),
+            AnimatedTextButton(
+              duration: PuzzleThemeAnimationDuration.textStyle,
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                textStyle: PuzzleTextStyle.headline5,
+              ).copyWith(
+                  foregroundColor: MaterialStateProperty.all(Color(0xFF2447A3)),
+              ),
+              onPressed: () {
+                QR.navigator.replaceAllWithName(RoutesName.SETTING_PAGE);
+              },
+              child: Text("Change Level"),
+            ),
+          ]
         ),
         const ResponsiveGap(
           small: 12,
@@ -300,7 +342,7 @@ class SimpleStartSection extends StatelessWidget {
         ResponsiveLayoutBuilder(
           small: (_, __) => const SizedBox(),
           medium: (_, __) => const SizedBox(),
-          large: (_, __) => const SimplePuzzleShuffleButton(),
+          large: (_, __) =>  SimplePuzzleShuffleButton(state: state),
         ),
       ],
     );
@@ -488,7 +530,7 @@ class SimplePuzzleTile extends StatelessWidget {
       ),
       onPressed: () {
         if(state.puzzleStatus == PuzzleStatus.incomplete){
-          context.read<PuzzleBloc>().add(TileTapped(tile));
+          context.read<PuzzleBloc>().add(TileTapped(tile, puzzleLevel: state.puzzleLevel));
         }
 
         if(state.numberOfMoves == 0){
@@ -513,7 +555,11 @@ class SimplePuzzleTile extends StatelessWidget {
 @visibleForTesting
 class SimplePuzzleShuffleButton extends StatelessWidget {
   /// {@macro puzzle_shuffle_button}
-  const SimplePuzzleShuffleButton({Key? key}) : super(key: key);
+  const SimplePuzzleShuffleButton({Key? key,
+    required this.state}) : super(key: key);
+
+
+  final PuzzleState state;
 
   @override
   Widget build(BuildContext context) {
@@ -521,7 +567,7 @@ class SimplePuzzleShuffleButton extends StatelessWidget {
       textColor: PuzzleColors.primary0,
       backgroundColor: PuzzleColors.primary6,
       onPressed: () {
-        context.read<PuzzleBloc>().add(const PuzzleReset());
+        context.read<PuzzleBloc>().add( PuzzleReset(puzzleLevel: state.puzzleLevel));
         context.read<TimerBloc>().add(const TimerReset());
       },
       child: Row(
@@ -533,7 +579,7 @@ class SimplePuzzleShuffleButton extends StatelessWidget {
             height: 17,
           ),
           const Gap(10),
-          Text(context.l10n.puzzleShuffle),
+          Text("Reset Puzzle"),
         ],
       ),
     );

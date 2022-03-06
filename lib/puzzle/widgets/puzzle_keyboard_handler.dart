@@ -76,7 +76,7 @@ class _PuzzleKeyboardHandlerState extends State<PuzzleKeyboardHandler> {
       }
 
       if (tile != null) {
-        context.read<PuzzleBloc>().add(TileTapped(tile));
+        context.read<PuzzleBloc>().add(TileTapped(tile, puzzleLevel : context.read<PuzzleBloc>().state.puzzleLevel));
         unawaited(_audioPlayer.replay());
       }
     }
