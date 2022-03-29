@@ -1,4 +1,4 @@
-# Wordseeker
+# Wordseeker | Seek some words
 
 **Live Demo**
 [Wordseeker](https://prasetyanurangga.github.io/wordseeker/)
