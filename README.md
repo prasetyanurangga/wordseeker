@@ -4,5 +4,5 @@
 [Wordseeker](https://prasetyanurangga.github.io/wordseeker/)
 
 ### App Final UI
-![App UI](https://github.com/prasetyanurangga/minerva/raw/main/minerva_app_ui.png)
-![Demo](https://github.com/prasetyanurangga/minerva/raw/main/minerva_app.gif)
+![App UI](https://github.com/prasetyanurangga/wordseeker/raw/main/wordsekeer_ui_landing.png)
+![App UI](https://github.com/prasetyanurangga/wordseeker/raw/main/wordsekeer_ui_puzzle.png)
